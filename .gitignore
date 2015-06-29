@@ -5,6 +5,7 @@ ehthumbs.db
 *.#*
 *.nfo
 *.deb
+*.gitattributes
 
 # Folder config file
 Desktop.ini
