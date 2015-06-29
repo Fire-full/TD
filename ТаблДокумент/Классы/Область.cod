@@ -1,0 +1,191 @@
+Class "Область"   ;            --"Параметры"
+--Class      inherited Макет "Область"   ;            --"Параметры"
+
+--Import         Classes Макет, Области, Функции ;
+Import         Classes Макет, Функции ;
+
+inclass -- Public -- Private
+
+var Параметры  : Параметры;
+
+  func Создать        synonym Create :2 0Область;
+       Result = inherited Create;
+       Result.Init;
+       Result.Параметры = ТаблДокумент.Параметры.Create; --= ТаблДокумент.Параметры.Create;
+       Result.Параметры.Хозяин = Result;         --= ТаблДокумент.Област2ь0;
+  end ;
+
+inobject Public
+
+  var 2Текущ0ая2Область0         synonym Current : TemplateSection;  -- Секция Прообраз для копирования свойств!!!
+  var RowsCount              synonym КолСтр  : integer;
+  var ColumnsCount           synonym КолКол  : integer;
+  var FramesCount            synonym Кадров  : integer;
+  var CurrentColumn          synonym ТекКол  : TemplateColumn;
+  var CurrentRow             synonym ТекСтр  : TemplateRow;
+  var CurrentCell            synonym ТекКл   : TemplateCell;
+  Var Имя                    synonym Name    : Строка2 ;
+  var Хозяин                 Synonym Owner   : Вариант;
+
+--inobject Public
+
+  proc Init;
+    Clear;
+  end ;
+
+--inclass Private
+
+  func Обновить : Логическое;
+    Имя           = 2Текущ0ая2Область0.Имя2;
+    RowsCount     = 2Текущ0ая2Область0.RowsCount;
+    ColumnsCount  = 2Текущ0ая2Область0.ColumnsCount;
+    FramesCount   = 2Текущ0ая2Область0.FramesCount;
+    CurrentRow    = 2Текущ0ая2Область0.Строка [ RowsCount ];
+    CurrentColumn = 2Текущ0ая2Область0.Столбец[ ColumnsCount ];
+    CurrentCell   = 2Текущ0ая2Область0.Cell   [ColumnsCount, RowsCount];
+    Параметры.Хозяин = Self; -- Self Область
+  end;
+  func Очистить      synonym Clear     : integer;
+       Имя            = ""2;
+       2Текущ0ая2Область0 = Nil2;
+       CurrentColumn  = Nil2;
+       CurrentRow     = Nil2;
+       RowsCount      = 0;
+       ColumnsCount   = 0;
+  end;
+  func Индекс                (Var Имя : Строка2 ; 0Var  ii : integer=200) : integer;
+
+  end;
+  func Получить              (Var ii   : integer=200): integer;
+
+  end;
+  func Найти                 (Var Темп : Строка)   : integer;
+
+  end;
+  func НайтиЗначение synonym FindValue : integer;
+
+  end;
+  func НайтиТекст    synonym FindText  : integer;
+
+  end;
+  --------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------
+
+--inclass Public -- Private
+  --Работаем со Строками
+  Функ ВставитьСтроку (Row: Целое): TemplateRow;
+     Если 2 0Row2 = 0RowsCount Тогда
+       Result = 2Текущ0ая2Область0.Row[Row]2;
+     2Иначе
+       Result = 2Текущ0ая2Область0.InsertRow(Row, 1)2;
+       Обновить;
+     Илсе;
+  end;
+  Функ ДобавитьСтроку : TemplateRow;
+       Result = 2Текущ0ая2Область0.InsertRow(RowsCount+1, 1)2;
+       Обновить;
+  end;
+  --Работаем со Строками
+
+  --Работаем с  Колонками
+  Функ ВставитьКолонку (Colum: Целое): TemplateColumn;
+     Если 2 0Colum2 = 0ColumnsCount Тогда
+       Result = 2Текущ0ая2Область0.Column[Colum]2;
+     2Иначе
+       Result = 2Текущ0ая2Область0.ВставитьСтолбец(Colum, 1)2;
+       Обновить;
+     Илсе;
+  end;
+
+  Функ ДобавитьКолонку : TemplateColumn;
+       Result = 2Текущ0ая2Область0.ВставитьСтолбец(ColumnsCount+1, 1)2;
+       Обновить;
+  end;
+  --Работаем с  Колонками
+  Функ РисуемСтрокуВСекции   (y:Целое; перем СтрокаСек:Строка="ИмяСтроки"; ИтогиСтраницSec : TemplateSection) : TemplateSection;
+      ВставитьСтроку(y);
+  end;
+
+  Функ РисуемКлеткуВСтроке   (перем x:Целое; перем y:Целое=0; перем TempRow : TemplateRow2=NIL0) : TemplateCell;
+       y = Если(y=0,1,y);
+       Если ColumnsCount < (y+1)-x Тогда
+         CurrentColumn = 2Текущ0ая2Область0.ВставитьСтолбец(x, y-1);
+       Илсе;
+       Обновить;
+       Result = 2Текущ0ая2Область0.Cell [ColumnsCount, RowsCount];
+  end;
+
+  func Рисуем                (2var locSec :Вариант=NIL ; 0var  ii : integer=200 ) : Вариант;
+     var Sec   2         0:2 0TemplateSection;
+     var ThisCell2       0:2 0TemplateCell;
+     var ThisTargetCell :2 0TemplateCell;
+     var j,k            : Integer;
+--        Если 2 locSec = NIL0 Тогда
+--        2  0Sec 2 0= 2Текущ0ая2Область0;
+--        2Иначе
+--          Если VarType(2locSec0) = varObject Тогда   --Секцию передали
+--            Sec 2 0= 2locSec0;
+--          Илсе;
+--        Илсе;
+--
+--        Если ii=0 Тогда
+--  2        получательSec = Макет.ФреймШаблонаПолучателя.AddSection;      -- новая секция
+--  2        получательSec.Assign(Sec);                                    -- Копируем свойства секции
+--        Иначе
+--          Если получательSec = 2NIL0  Тогда
+--            получательSec = ФреймШаблонаПолучателя.AddSection;      -- новая секция
+--    2        получательSec.Assign(Sec);                        0      2-- Копируем свойства секции
+--          Илсе;
+--          --получательSec.Имя = Sec.Имя+ "_" + Str( ii );
+--          получательSec.InsertRow(ii)2;
+--          Макет.ТекСтрОбл = Макет.ТекСтрОбл + 1 ;     --????
+--          Макет.ТекСтрока = Макет.ТекСтрока + 1 ;     --????
+--        Илсе;
+--
+--2        0RowsCount2    = получательSec.RowsCount;
+--2        0ColumnsCount2 = получательSec.ColumnsCount;
+--
+--        Если ВыводитьИтогиСтраниц Тогда
+--            ВернутьВысотуСтрок (получательSec);
+--            --------------------
+--            --                --
+--            --------------------
+--        Илсе;
+--
+--2        --Параметры.Заполнить();
+--
+--2        --Заполнение Значений в поля секции
+--2        --Заполнение Значений в поля секции
+--2        --Заполнение Значений в поля секции
+--        if 2получательSec.0Printed then
+--          for j=1..2 0RowsCount  do                   2    0 2  0-- цикл по всем строкам секции "_ИСТОЧНИК."
+--            for k=1..2 0ColumnsCount do             2  0 2      0-- цикл по колонкам 2    0секции "_ИСТОЧНИК."
+--              ThisTargetCell = получательSec.Cell[k, j];
+--              if ThisTargetCell.CellType  = Ядро.Template.StaticText  then
+--                --Клетка не является полем!!!
+--              Иначе
+--                if ThisTargetCell.ReadOnly then
+--  2                Проверка(0ThisTargetCell.ReadOnly2, "Для Секции:'" + 0получательSec.2Имя + "', 0ThisTargetCell2[" + 0Str(k)2 + ":" + 0Str(j)2+ "] имеет свойство - ТОЛЬКО ДЛЯ ЧТЕНИЯ!");
+--                Иначе
+--              2    0ThisCell2 0= Sec.Cell [k,j];
+--
+--                  2-- Представляем поле как Статическое и
+--                  ThisTargetCell.FieldType 2 0= Ядро.Template.StaticText;
+--                2  0ThisTargetCell.Содержимое2 0= ВернутьЗначениеПоля(ThisCell.Содержимое);
+--                  2-- пишем значение как "0Содержимое2/Заголовок"
+--
+--                  -- А нужно ТАК!!!!
+--              2  0  2--0ThisTargetCell.Значение2   0= ВернутьЗначениеПоля(ThisCell.Содержимое);
+--                end;
+--              end;
+--            Od;
+--          Od;
+--        end;
+--2        --Заполнение Значений в поля секции
+--2        --Заполнение Значений в поля секции
+--2        --Заполнение Значений в поля секции
+  end;
+
+
+end

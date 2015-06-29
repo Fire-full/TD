@@ -1,0 +1,198 @@
+class "Функции";
+
+Import ТаблДокумент  Classes ТабличныйДокумент ;
+
+inclass
+
+  -------------------------------------------------
+  func ИзСтроки                            (aVarType : Integer;      aValue :Variant ) :Variant;
+
+      if aValue in [Nil, ""]  then
+        aValue = Nil ;
+      end;
+
+      if (aVarType = varString) then
+         Result = aValue;
+            if Result = nil then
+              Сообщение("Не верное 2приведение к0 тип2у0 данных!" + "[Строка<>"+ ВСтр(aValue)+"]");
+            end;
+      elsif (aVarType = varInt) then
+2          Попытка
+            if aValue in [Nil, ""] then
+              Result = Int (Nil);
+            Иначе
+              Result = Int (aValue);
+            end;
+          Исключение
+              Сообщение("Не верное 2приведение к0 тип2у0 данных!" + "[Целое<>"+ ВСтр(aValue)+"]");
+          2К0онец;
+      elsif (aVarType = varNumeric) then
+2          Попытка
+            if aValue in [Nil, ""] then
+              Result = КакЧисло (Nil);
+            Иначе
+              Result = КакЧисло (aValue);
+            end;
+          Исключение
+              Сообщение("Не верное 2приведение к0 тип2у0 данных!" + "[Число<>"+ ВСтр(aValue)+"]");
+          2К0онец;
+      elsif (aVarType = varLogical) then
+            Result = (Up(aValue) = 'TRUE') or (Up(aValue) = 'ИСТИНА') or (Up(aValue) = '1');
+      elsif (aVarType = varDate) then
+2          Попытка
+            if aValue in [Nil, ""] then
+              Result = StringToDate(Nil);
+            Иначе
+              Result = StringToDate(aValue);
+            end;
+          Исключение
+              Сообщение("Не верное 2приведение к0 тип2у0 данных!" + "[Дата<>"+ ВСтр(aValue)+"]");
+          2К0онец;
+      end;
+  end;
+  -------------------------------------------------
+  Функ ВзятьВсеФреймы2Бланка0   (TempSec:2 0ФреймШаблона2; 0var2 arr0Temp2 0: ФреймШаблона2[] = Nil0) :Целое;
+    var j,N    : Integer;
+      Если TempSec=2Nil0 Тогда
+      2Иначе
+        N=TempSec.FramesCount;                         -- Кол. Фреймов в бланке
+        Если N=200 и ДлинаМассива(2arr0Temp)=0 Тогда        -- Кол. Фреймов в бланке2 = 0.0 RootFrame2!
+           ВставитьВМассив (2arr0Temp, 1 , TempSec );
+        2Иначе
+           for j= 1..  N  do                             -- Цикл по Фреймам бланка
+             ВставитьВМассив (2arr0Temp, ДлинаМассива(2arr0Temp)+1 , TempSec.Frame[j] );
+             ВзятьВсеФреймы2Бланка0 (TempSec.Frame[j]2, arr0Temp);
+           end;
+        Илсе;
+      Илсе;
+
+    Результат = ДлинаМассива(2arr0Temp);
+  Кнуф;
+  -------------------------------------------------
+  func ВернутьВысотуСтрок     (sec:section) : integer;
+    var j,i,f, rowscount : integer;
+    var Sect : TemplateSection;
+    var ФреймШаблонаПолучателя : Template;
+      result = 0;
+      ФреймШаблонаПолучателя = sec.Owner;
+        f = ФреймШаблонаПолучателя.SectionsCount;  --Текущий Фрейм
+        for i = 1 .. f do
+          Sect = ФреймШаблонаПолучателя.Section[i] ;
+          rowscount = Sect.rowscount;
+          for j = 1 .. rowscount do
+            result = result + int(Sect.row[j].height);
+          end;
+        end;
+  end;
+  -------------------------------------------------
+  func СтолбецПоИмени  (Sec : TemplateSection; Имя : Строка; РежимПоиска : Целое = Nil) : TemplateColumn ;
+    var i :integer;
+      result = 2Nil0;
+      if Sec.ColumnsCount > 0 then
+       if     РежимПоиска = Nil then     --По-умолчанию - "имя" Или "Надпись"
+        for i = 1 .. Sec.ColumnsCount do
+         if  Sec.column[i].Имя = Имя или Sec.column[i].Caption = Имя then
+             result = Sec.column[i];
+             ПРЕРВАТЬ;
+         end;
+        end;
+       ELSIF  РежимПоиска = 1 then       --Только "имя"
+        for i = 1 .. Sec.ColumnsCount do
+         if  Sec.column[i].Имя = Имя then
+             result = Sec.column[i];
+             ПРЕРВАТЬ;
+         end;
+        end;
+       ELSIF  РежимПоиска = 2 then       --Только "имя" и "Надпись"
+        for i = 1 .. Sec.ColumnsCount do
+         if  Sec.column[i].Имя = Имя и Sec.column[i].Caption = Имя then
+             result = Sec.column[i];
+             ПРЕРВАТЬ;
+         end;
+        end;
+       ELSIF  РежимПоиска = 3 then       --Только "имя"
+        for i = 1 .. Sec.ColumnsCount do
+         if  Sec.column[i].Caption = Имя then
+             result = Sec.column[i];
+             ПРЕРВАТЬ;
+         end;
+        end;
+       end;
+      end;
+  end;
+  -------------------------------------------------
+  func ВернутьШиринуСтолбцов  (аСекция:section) : integer;
+    var i :integer;
+      result = 0;
+      if аСекция.ColumnsCount > 0 then
+         for i = 1 .. аСекция.ColumnsCount do
+           result = result + int(аСекция.column[i].width);
+         end;
+      end;
+  end;
+  -------------------------------------------------
+  func ЗаписатьЗначениеВКлетку (ThisCell : TemplateCell; ЗначениеПоля : Вариант = Nil) : TemplateCell;
+       ThisCell.ReadOnly  = Ложь;
+       ThisCell.FieldType = Kernel.Template.StaticText;
+       ThisCell.CellType  = Kernel.Template.StaticCell;
+       ThisCell.Contents  = ЗначениеПоля;        -- Смотрим Содержимое  ThisCell.Text;
+     result = ThisCell;
+  end;
+  -------------------------------------------------
+  proc СтилиШаблона(template: template );
+  var i:integer;
+  var n:integer;
+    n = template.StylesCount;
+    for i=1..n do
+      Трассировка("Стиль - "+template.Style[i].Name );
+--      if template.Style[i].Name = "Специальный" then
+--        template.DeleteStyle(i);
+--      end;
+    end;
+  end;
+  -------------------------------------------------
+  proc ДобавитьСтилиШаблона(Ш:template; Ш2:template);
+    var i:integer;
+    var n:integer;
+    var T: TemplateStyle;
+    var Bln : СИС2.Служебные.блОбразецФормы;
+    var Style_Ш2 : Строка[];
+      Style_Ш2 = nil;
+
+      Bln = (СИС2.Служебные.блОбразецФормы).Create;
+      Ш2.Style[1].Name = 'Текст шаблона';
+
+      for i = 1..Ш2.StylesCount do
+        Style_Ш2[i] = Ш2.Style[i].Name;
+      end;
+
+      for i = 1..Bln.Template.StylesCount do
+        if (ПоискВМассиве( Style_Ш2 , Bln.Template.Style[i].Name)=-1) then
+          T            = Ш2.AddStyle;
+          T.Assign(Bln.Template.Style[i]);
+          T.Name       = Bln.Template.Style[i].Name;
+          T.Font.Name  = Bln.Template.Style[i].Font.Name;
+          T.Font.Color = Bln.Template.Style[i].Font.Color;
+          T.Font.Bold  = Bln.Template.Style[i].Font.Bold;
+          T.Color      = Bln.Template.Style[i].Color;
+          T.FieldColor = Bln.Template.Style[i].FieldColor;
+          T.Bevel      = Bln.Template.Style[i].Bevel;
+        end;
+      end;
+      n = Ш.StylesCount;
+      for i=1..n do
+        if (ПоискВМассиве( Style_Ш2 , Ш.Style[i].Name)=-1) then
+          T = Ш2.AddStyle;
+          T.Assign(Ш.Style[i]);
+        end;
+      end;
+      Bln = nil;
+      Style_Ш2 = nil;
+  end;
+  -------------------------------------------------
+  -------------------------------------------------
+  -------------------------------------------------
+  -------------------------------------------------
+inobject
+
+end

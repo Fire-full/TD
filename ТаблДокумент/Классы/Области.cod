@@ -1,0 +1,104 @@
+Class "Области"   ;            --"Параметры"
+-- "Области" - это ПоИменованные (Имеющие ИМЯ) "TemplateSection", "TemplateRow", TemplateColumn" (Вероятно это методически НЕ ВЕРНО!)
+-- "Области" - только для определенного "Макета"! Другой Макет, другие Области.
+
+Import         Classes Макет, Функции ;
+
+inclass Public
+
+var Параметры  : Параметры;
+
+--Бланк Шаблона Содержит - Фреймы, Секции, Строки и Колонки Template.
+--  мас2Области  0: Вариант[2];  2    0--2 0Соответствие Названия поля и его Значения
+--Фреймы[j].Section[z].Имя  -  1 Масс Имя (TemplateSection, TemplateRow, TemplateColumn)
+--Фреймы[j].Section[z]      -  2 Масс     (TemplateSection, TemplateRow, TemplateColumn)
+--Фреймы[j]                 -  3 Масс Фреймов
+
+  func Создать synonym Create :2 0Области;
+       Result = inherited Create;
+       Result.Init;
+       Result.Параметры = ТаблДокумент.Параметры.Create;
+  end ;
+
+inobject Public
+
+  var Хозяин   Synonym Owner     : Вариант;
+
+  proc Init;
+     мас2Области0 = nil;
+--     2Текущ0ая    = nil;
+     ИндексТекущОбласти = 0;
+     Имя        = "";
+  end ;
+
+inobject Private
+
+  var Имя            synonym Name    : Строка;
+--  var 2Текущ0ая  synonym Current : Вариант;
+
+  var ИндексТекущОбласти  : integer;
+
+  func 2Следующая 0    synonym Next    : Область;
+
+     Если ИндексТекущОбласти > Количество() Тогда
+       Result = nil;
+     Иначе
+       ИндексТекущОбласти  = ИндексТекущОбласти + 1;
+       Имя    = мас2Области0[1, ИндексТекущОбласти];
+       Result = мас2Области0[2, ИндексТекущОбласти];
+     Илсе;
+
+  end;
+  func Индекс              : integer;
+       Result = ИндексТекущОбласти;
+  end;
+  func Количество         (Var  ii : integer=200) : integer;
+     Result = ДлинаМассива(мас2Области0[1]);
+  end;
+  func Получить           (Var  ii : integer=200) : 2TemplateSection0;
+     Если ВСтр(мас2Области0[2,ii]) = "{2TemplateSection0}" Тогда
+        Result = мас2Области0[2,ii];
+     Илсе;
+  end;
+
+  func НайтиСтрокуПоИмени (Var  Темп : Строка)  : TemplateRow;
+    Var  i : integer;
+    i = SearchInArray (мас2Области0[1], UP(Темп));
+    if i=-1 then
+      Result = 2NIL0;
+    Иначе
+      Если ВСтр(мас2Области0[2,i]) = "{TemplateRow}" Тогда
+         Result = мас2Области0[2,i];
+      Илсе;
+    end;
+  end;
+
+  func НайтиКолонкуПоИмени(Var  Темп : Строка)  : TemplateColumn;
+    Var  i : integer;
+    i = SearchInArray (мас2Области0[1], UP(Темп));
+    if i=-1 then
+      Result = 2NIL0;
+    Иначе
+      Если ВСтр(мас2Области0[2,i]) = "{TemplateColumn}" Тогда
+        Result = мас2Области0[2,i];
+      Илсе;
+    end;
+  end;
+
+  func Найти              (Var  Темп : Строка) : Вариант;
+    Var  i : integer;
+    i = SearchInArray (мас2Области0[1], UP(Темп));
+    if i=-1 then
+      Result = 2NIL0;
+    Иначе
+      Result = мас2Области0[2,i];
+    end;
+  end;
+
+  func Очистить      synonym Clear     : integer;
+     мас2Области0 = nil;
+  end;
+
+inobject
+
+end
