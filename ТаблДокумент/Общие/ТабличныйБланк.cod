@@ -153,31 +153,31 @@ CurrentFrame       : TemplateFrame;     -- Frame «аголовок
 --------------------------------------------------------------------------------
   proc ѕри”ничтожении —иноним OnDestroy;
 
-     Destroy;
+   --  Destroy;
 
   end;
   -------------------------------------------------
   proc ”ничтожение —иноним Destroy;
 
-    var p, p1: ¬ариант ;
-
-    p = Current;
-    p1 = p.’оз€ин;
-    while p1 <> nil do
-      p = p1;
-      p1 = p1.’оз€ин;
-      p.’оз€ин = nil;
-    od;
-    Current.’оз€ин        = nil;
-
-    p = Self;
-    p1 = p.’оз€ин;
-    while p1 <> nil do
-      p = p1;
-      p1 = p1.’оз€ин;
-      p.’оз€ин = nil;
-    od;
-    Self.’оз€ин        = nil;
+--    var p, p1: ¬ариант ;
+--
+--    p = Current;
+--    p1 = p.’оз€ин;
+--    while p1 <> nil do
+--      p = p1;
+--      p1 = p1.’оз€ин;
+--      p.’оз€ин = nil;
+--    od;
+--    Current.’оз€ин        = nil;
+--
+--    p = Self;
+--    p1 = p.’оз€ин;
+--    while p1 <> nil do
+--      p = p1;
+--      p1 = p1.’оз€ин;
+--      p.’оз€ин = nil;
+--    od;
+--    Self.’оз€ин        = nil;
 
   end;
   -------------------------------------------------
