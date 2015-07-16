@@ -25,8 +25,6 @@ InObject Private
 
 --{ Переменные Object-ов бланка
 
-Current                        :2 0ТаблДокумент.ТабличныйБланк ;
-
 ЗаголовокОкнаФормы : Строка;
 
 CurrentFrame       : TemplateFrame;     -- Frame Заголовок
@@ -82,7 +80,7 @@ CurrentFrame       : TemplateFrame;     -- Frame Заголовок
        секПриемник = CurrentFrame.InsertSection(1);   -- БланкМакета.Шаблон.ТекущийФрейм.Имя = "RootFrame"
        self.Template.CurrentSection = секПриемник;
      Илсе;
-     Current = CurAr2a0;
+
      Обновить;
 
   end;
@@ -125,6 +123,12 @@ CurrentFrame       : TemplateFrame;     -- Frame Заголовок
     --ЗДЕСЬ НУЖНО Очистить Одной строкой ВСЕ СОЗДАННЫЕ ОБЪЕКТЫ!!!!!!
 
     Уничтожается=Истина;
+
+
+    TraceRef(Параметры);
+    TraceRef(ВременныйБланк);
+    TraceRef(ТабличныйБланк);
+    TraceRef(ТабличныйДокумент);
      
   конец;
 
@@ -151,33 +155,9 @@ CurrentFrame       : TemplateFrame;     -- Frame Заголовок
   end;
 
 --------------------------------------------------------------------------------
-  proc ПриУничтожении Синоним OnDestroy;
-
-   --  Destroy;
-
-  end;
-  -------------------------------------------------
   proc Уничтожение Синоним Destroy;
 
---    var p, p1: Вариант ;
---
---    p = Current;
---    p1 = p.Хозяин;
---    while p1 <> nil do
---      p = p1;
---      p1 = p1.Хозяин;
---      p.Хозяин = nil;
---    od;
---    Current.Хозяин        = nil;
---
---    p = Self;
---    p1 = p.Хозяин;
---    while p1 <> nil do
---      p = p1;
---      p1 = p1.Хозяин;
---      p.Хозяин = nil;
---    od;
---    Self.Хозяин        = nil;
+      Хозяин = nil;
 
   end;
   -------------------------------------------------

@@ -15,7 +15,7 @@ inclass Public
 inobject Public                                                                            --  var
 --
 --
- Current                        :2 0“аблƒокумент.ѕараметры ;
+-- Current                        :2 0“аблƒокумент.ѕараметры ;
  ’оз€ин           Synonym Own   : ¬ариант;  -- ’оз€ин свойств!!!
  CurrentParameter               : integer;
  —труктураѕолей«аполнена        : Ћогическое;
@@ -38,7 +38,7 @@ inobject Public                                                                 
     »м€ќбъекта   = "ѕараметрџ_" + —тр(Ќомерќбъекта);
 
     ќбновить ;
-    Current = t;
+--    Current = t;
   end ;
   proc ќбновить ;
 
@@ -59,7 +59,7 @@ inobject Public                                                                 
 
   func  оличество      Synonym  Count (2var locSec :0 ¬ариант = nil) : integer;
 
-ќбновить ;
+     ќбновить ;
      ≈сли 2locSec0 = nil “огда
        Result = ƒлинаћассива(’оз€ин.масѕо»менованныхѕолей[1]);
        —труктураѕолей«аполнена = »стина;
@@ -327,27 +327,29 @@ inobject Public                                                                 
 -----------------------
   proc ”ничтожение —иноним Destroy;
 
-    var p, p1: ¬ариант ;
+    var p : ¬ариант ;
+    var p1: “абличныйƒокумент ;
 
-    p = Current;
-    p1 = p.’оз€ин;
-    while p1 <> nil do
-      p = p1;
-      p1 = p1.’оз€ин;
-      p.’оз€ин = nil;
-    od;
-    Current.’оз€ин = nil;
-    Current = nil;
+--    p = Self;
+--    p1 = p.’оз€ин;
+--    while p1 <> nil do
+--      p = p1;
+--      p1 = p1.’оз€ин;
+--      p.’оз€ин = nil;
+--    od;
+--    Self.’оз€ин = nil;
+    ’оз€ин = nil;
+    --Self = nil;
 
-    p = Self;
-    p1 = p.’оз€ин;
-    while p1 <> nil do
-      p = p1;
-      p1 = p1.’оз€ин;
-      p.’оз€ин = nil;
-    od;
-    Self.’оз€ин = nil;
-    Self = nil;
+--    p = Current;
+--    p1 = p.’оз€ин;
+--    while p1 <> nil do
+--      p = p1;
+--      p1 = p1.’оз€ин;
+--      p.’оз€ин = nil;
+--    od;
+--    Current.’оз€ин = nil;
+--    Current = nil;
 
   end;
   -------------------------------------------------

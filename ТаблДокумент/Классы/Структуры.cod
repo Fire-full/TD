@@ -10,7 +10,7 @@ inclass -- Public -- Private
   func   Новый  синоним On ( t: Вариант = Nil ) : ТаблДокумент.Структуры;
        Result = inherited Create;
 --       ВставитьВМассив(МоиОбъекты, ДлинаМассива(МоиОбъекты)+1, Result);
-       Result.Own = t;
+       2--0Result.Own = t;
        Result.Init(Result);
        2--0Result.Параметры = ТаблДокумент.Параметры.Новый(Result);
   end ;
@@ -22,14 +22,14 @@ inclass -- Public -- Private
 inobject Public
 
  Пустой               : Логическое ;            -- var
- Параметры            : Параметры;              -- var
+-- Параметры            : Параметры;              -- var
  БланкМакета          : BlankForm;              -- var
  Sec                  : TemplateSection;        -- var
  CurrentSection       : TemplateSection;        -- var
  ColumnsCount         : Целое ;                 -- var
  RowsCount            : Целое ;                 -- var
  Текущая              : Целое;                  -- var
- Current              : ТаблДокумент.Структуры; -- var
+-- Current              : ТаблДокумент.Структуры; -- var
  Имя                  : Строка;                 -- var
  Значение             : Вариант;                -- var
  НомерОбъекта         : Целое;                  -- var
@@ -39,14 +39,14 @@ inobject Public
  Имя_Значение         : Вариант[2];             -- 1 - Имя переменной, 2 - Значение переменной
 
   proc Init( Cl : ТаблДокумент.Структуры);
-    var lClass  : Класс BlankForm;
+--    var lClass  : Класс BlankForm;
 
     Clear;
 
-    Current = Cl;
+--    Current = Cl;
 
-    НомерОбъекта = Current.ЧислоОбъектов;
-    ИмяОбъекта   = "СтруктурЫ_" + Стр(НомерОбъекта);
+--    НомерОбъекта = Current.ЧислоОбъектов;
+--    ИмяОбъекта   = "СтруктурЫ_" + Стр(НомерОбъекта);
 --    lClass       = СИС2.ФункцииКонсоли.НайтиФормуБланка("ВременныйБланк");
 --    БланкМакета  = lClass.Новый(Cl);
 --    Если БланкМакета.SecTemp=Nil Тогда
@@ -58,18 +58,15 @@ inobject Public
     Значение          = Nil;
     Текущая           = 0;
 
-    -- Через Массив
     Имя_Значение      = Nil;
-
-    -- Через Массив
 
   end ;
 
   func Вставить ( ИмяПоля:Строка; ЗначениеПоля : Вариант = Nil; var ТипП : VarTypes = Nil)  : Логическое ;
     var i        : Целое;
-    var Row      : TemplateRow;
-    var Column   : TemplateColumn;
-    var ThisCell : TemplateCell;
+--    var Row      : TemplateRow;
+--    var Column   : TemplateColumn;
+--    var ThisCell : TemplateCell;
     var ПоляНет  : Логическое ;
     var ТМП      : Вариант[1];
 
@@ -77,25 +74,13 @@ inobject Public
 
      Обновить;
      --{Проверка "Поля"
-
-        -- Через Массив
         i = ПоискВМассиве(Имя_Значение[1], ИмяПоля);
         Если i = -1 Тогда
           ПоляНет = Истина;
         Илсе;
-        -- Через Массив
-
---     Если СтолбецПоИмени(Sec, ИмяПоля) = Nil Тогда
---     --Если Sec.КлеткаПоПолю[ИмяПоля] = Nil Тогда  --Поля НЕТ, создаем!
---        ПоляНет = Истина;
---     Иначе
---        ПоляНет = Ложь;
---     Илсе;
-
      --}Проверка "Поля"
 
      --{Проверка Строк и Колонок
-     -- Через Массив
      Если Пустой Тогда    -- ColumnsCount=1 и
        ВставитьВМассив(Имя_Значение[ 1 ], ColumnsCount, ИмяПоля      );       --  ColumnsCount
        ВставитьВМассив(Имя_Значение[ 2 ], ColumnsCount, ЗначениеПоля );       --  RowsCount
@@ -110,23 +95,9 @@ inobject Public
        Илсе;
 
      Илсе;
-     -- Через Массив
-
---     Если Пустой Тогда    -- ColumnsCount=1 и
---       Column = Sec.Column[1];
---       Row    = Sec.Row   [1];
---     Иначе
---       Если ПоляНет Тогда
---         Column = Sec.InsertColumn(ColumnsCount+1, 1);
---       Илсе;
---       Row = Sec.Row[RowsCount];
---     Илсе;
      --}Проверка Строк и Колонок
 
      Обновить ;
-
---     Column.Имя     = ИмяПоля;
---     Column.Надпись = ИмяПоля;
 
      --{Записываем "Содержимое "
      IF VarType(ЗначениеПоля)=8 then        --Массив
@@ -137,21 +108,13 @@ inobject Public
            Для i = 1..ДлинаМассива(ТМП) Цикл
              Если i<RowsCount Тогда
              иначе
-               Sec.InsertRow( i+1, 1);
+               2--0Sec.InsertRow( i+1, 1);
              Илсе;
-             Sec.Клетка[Column.Номер, i].Contents = ТМП[i];
+             2--0Sec.Клетка[Column.Номер, i].Contents = ТМП[i];
              Обновить ;
            Лкиц;
          Илсе;
        Илсе;
-     Иначе
-
---       ThisCell           = Sec.Cell[Column.Номер,Row.Номер];
---       ThisCell.ReadOnly  = Ложь;
---       ThisCell.FieldType = Kernel.Template.StaticText;
---       ThisCell.CellType  = Kernel.Template.StaticCell;
---       ThisCell.Contents  = ЗначениеПоля;        -- Смотрим Содержимое  ThisCell.Text;
-
      Илсе;
      --}Записываем "Содержимое "
 
@@ -170,14 +133,8 @@ inobject Public
     Илсе;
     Если Текущая<=ColumnsCount Тогда
       Обновить ;
-        -- Через Массив
        Имя      = Имя_Значение[1, Текущая];2            -- 0Имя_Значение[1, Текущая]
        Значение = Имя_Значение[220, Текущая];            2-- 0Имя_Значение[220, Текущая]
-        -- Через Массив
---      Имя      = БланкМакета.SecTemp.Column[Текущая]   .Имя;
---      Значение = БланкМакета.SecTemp.Клетка[Текущая, 1].Contents;
-    Иначе
-      -- БланкМакета.SecTemp.КлеткаПоПолю[Значение].Text         Поле Содержимое / Contents  Поле Значение / Value   Поле Текст / Text
     Илсе;
     Результат = Если(Текущая<=ColumnsCount, Истина, Ложь);
 
@@ -191,13 +148,6 @@ inobject Public
 
   func Обновить : Логическое;
 
-   Sec          = Если(БланкМакета=Nil, Nil, БланкМакета.SecTemp);
-   CurrentSection = Sec ;
---   ColumnsCount = Sec.ColumnsCount;
---   RowsCount    = Sec.RowsCount;
-
-    -- Через Массив
-    --Имя_Значение      = Nil;
    ColumnsCount = ДлинаМассива(Имя_Значение[1]);
    RowsCount    = ДлинаМассива(Имя_Значение[1]);
    Если ColumnsCount = 0 Тогда
@@ -211,14 +161,9 @@ inobject Public
   func Очистить      synonym Clear : integer;
 
        Имя            = "";
-       Хозяин         = Nil;
---       CurrentColumn  = Nil;
---       CurrentRow     = Nil;
        RowsCount      = 0;
        ColumnsCount   = 0;
-       -- Через Массив
        Имя_Значение   = Nil;
-       -- Через Массив
 
   end;
 -----------------------------------------------------------------------------------
